@@ -1,0 +1,21 @@
+using Karify.Application.Models.Interface.Service;
+using Karify.Application.Models.Services;
+using Karify.Repository.Database;
+using Karify.Application.Models.Interface.Repository;
+using Karify.Worker;
+using Karify.Repository.Repository;
+
+var builder = Host.CreateApplicationBuilder(args);
+builder.Services.AddHostedService<Worker>();
+builder.Services.AddHttpClient("MockApi", client => 
+{ 
+    client.BaseAddress = new Uri("https://localhost:7066/api/");
+});
+
+builder.Services.AddTransient<IProyectoRepository, ProyectoRepository>();
+builder.Services.AddTransient<IProyectoService, ProyectoService>();
+
+builder.Services.AddTransient<DataBase>();
+
+var host = builder.Build();
+host.Run();

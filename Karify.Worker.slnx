@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/Core/">
+    <Project Path="D:/Tesis/Karify.Worker/Karify.Application/Karify.Application.csproj" />
+  </Folder>
+  <Folder Name="/Infrastructure/">
+    <Project Path="D:/Tesis/Karify.Worker/Karify.Repository/Karify.Repository.csproj" />
+    <Project Path="Karify.Infrastructure/Karify.Infrastructure.csproj" Id="b103f19e-a59a-4b2a-b48d-a4de641ec73a" />
+  </Folder>
+  <Folder Name="/Worker/">
+    <Project Path="D:/Tesis/Karify.Worker/Karify.Worker/Karify.Worker.csproj" />
+  </Folder>
+</Solution>

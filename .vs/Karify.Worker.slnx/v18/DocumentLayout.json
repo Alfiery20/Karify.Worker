@@ -3,36 +3,16 @@
   "WorkspaceRootPath": "D:\\Tesis\\Karify.Worker\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A3229FD8-FB9C-2B6C-0D36-B65EA18CABB1}|Karify.Worker\\Karify.Worker.csproj|d:\\tesis\\karify.worker\\karify.worker\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A3229FD8-FB9C-2B6C-0D36-B65EA18CABB1}|Karify.Worker\\Karify.Worker.csproj|solutionrelative:karify.worker\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{09CED847-FA25-E461-52D8-B07CF6F30677}|Karify.Application\\Karify.Application.csproj|d:\\tesis\\karify.worker\\karify.application\\models\\interface\\repository\\iproyectorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{09CED847-FA25-E461-52D8-B07CF6F30677}|Karify.Application\\Karify.Application.csproj|solutionrelative:karify.application\\models\\interface\\repository\\iproyectorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{09CED847-FA25-E461-52D8-B07CF6F30677}|Karify.Application\\Karify.Application.csproj|d:\\tesis\\karify.worker\\karify.application\\models\\interface\\service\\iproyectoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{09CED847-FA25-E461-52D8-B07CF6F30677}|Karify.Application\\Karify.Application.csproj|solutionrelative:karify.application\\models\\interface\\service\\iproyectoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{32042CFB-8ECC-A9AA-682C-FF3465024504}|Karify.Repository\\Karify.Repository.csproj|d:\\tesis\\karify.worker\\karify.repository\\repository\\proyectorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{32042CFB-8ECC-A9AA-682C-FF3465024504}|Karify.Repository\\Karify.Repository.csproj|solutionrelative:karify.repository\\repository\\proyectorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{09CED847-FA25-E461-52D8-B07CF6F30677}|Karify.Application\\Karify.Application.csproj|d:\\tesis\\karify.worker\\karify.application\\models\\services\\proyectoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{09CED847-FA25-E461-52D8-B07CF6F30677}|Karify.Application\\Karify.Application.csproj|solutionrelative:karify.application\\models\\services\\proyectoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A3229FD8-FB9C-2B6C-0D36-B65EA18CABB1}|Karify.Worker\\Karify.Worker.csproj|d:\\tesis\\karify.worker\\karify.worker\\worker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A3229FD8-FB9C-2B6C-0D36-B65EA18CABB1}|Karify.Worker\\Karify.Worker.csproj|solutionrelative:karify.worker\\worker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B103F19E-A59A-4B2A-B48D-A4DE641EC73A}|Karify.Infrastructure\\Karify.Infrastructure.csproj|d:\\tesis\\karify.worker\\karify.infrastructure\\services\\unprgexternalservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B103F19E-A59A-4B2A-B48D-A4DE641EC73A}|Karify.Infrastructure\\Karify.Infrastructure.csproj|solutionrelative:karify.infrastructure\\services\\unprgexternalservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A3229FD8-FB9C-2B6C-0D36-B65EA18CABB1}|Karify.Worker\\Karify.Worker.csproj|d:\\tesis\\karify.worker\\karify.worker\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{A3229FD8-FB9C-2B6C-0D36-B65EA18CABB1}|Karify.Worker\\Karify.Worker.csproj|solutionrelative:karify.worker\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A3229FD8-FB9C-2B6C-0D36-B65EA18CABB1}|Karify.Worker\\Karify.Worker.csproj|d:\\tesis\\karify.worker\\karify.worker\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{A3229FD8-FB9C-2B6C-0D36-B65EA18CABB1}|Karify.Worker\\Karify.Worker.csproj|solutionrelative:karify.worker\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{09CED847-FA25-E461-52D8-B07CF6F30677}|Karify.Application\\Karify.Application.csproj|d:\\tesis\\karify.worker\\karify.application\\models\\karify\\obtenertesisresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{09CED847-FA25-E461-52D8-B07CF6F30677}|Karify.Application\\Karify.Application.csproj|solutionrelative:karify.application\\models\\karify\\obtenertesisresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -47,105 +27,40 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "IProyectoRepository.cs",
-              "DocumentMoniker": "D:\\Tesis\\Karify.Worker\\Karify.Application\\Models\\Interface\\Repository\\IProyectoRepository.cs",
-              "RelativeDocumentMoniker": "Karify.Application\\Models\\Interface\\Repository\\IProyectoRepository.cs",
-              "ToolTip": "D:\\Tesis\\Karify.Worker\\Karify.Application\\Models\\Interface\\Repository\\IProyectoRepository.cs",
-              "RelativeToolTip": "Karify.Application\\Models\\Interface\\Repository\\IProyectoRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "UnprgExternalService.cs",
+              "DocumentMoniker": "D:\\Tesis\\Karify.Worker\\Karify.Infrastructure\\Services\\UnprgExternalService.cs",
+              "RelativeDocumentMoniker": "Karify.Infrastructure\\Services\\UnprgExternalService.cs",
+              "ToolTip": "D:\\Tesis\\Karify.Worker\\Karify.Infrastructure\\Services\\UnprgExternalService.cs",
+              "RelativeToolTip": "Karify.Infrastructure\\Services\\UnprgExternalService.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAADwvxwAAAA4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-28T04:30:52.2Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "ProyectoRepository.cs",
-              "DocumentMoniker": "D:\\Tesis\\Karify.Worker\\Karify.Repository\\Repository\\ProyectoRepository.cs",
-              "RelativeDocumentMoniker": "Karify.Repository\\Repository\\ProyectoRepository.cs",
-              "ToolTip": "D:\\Tesis\\Karify.Worker\\Karify.Repository\\Repository\\ProyectoRepository.cs",
-              "RelativeToolTip": "Karify.Repository\\Repository\\ProyectoRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAwAAAA5AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-28T04:22:12.04Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\Tesis\\Karify.Worker\\Karify.Worker\\Program.cs",
-              "RelativeDocumentMoniker": "Karify.Worker\\Program.cs",
-              "ToolTip": "D:\\Tesis\\Karify.Worker\\Karify.Worker\\Program.cs",
-              "RelativeToolTip": "Karify.Worker\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-28T04:19:31.51Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Worker.cs",
-              "DocumentMoniker": "D:\\Tesis\\Karify.Worker\\Karify.Worker\\Worker.cs",
-              "RelativeDocumentMoniker": "Karify.Worker\\Worker.cs",
-              "ToolTip": "D:\\Tesis\\Karify.Worker\\Karify.Worker\\Worker.cs",
-              "RelativeToolTip": "Karify.Worker\\Worker.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-28T04:12:36.955Z",
+              "WhenOpened": "2026-06-28T09:16:38.91Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "IProyectoService.cs",
-              "DocumentMoniker": "D:\\Tesis\\Karify.Worker\\Karify.Application\\Models\\Interface\\Service\\IProyectoService.cs",
-              "RelativeDocumentMoniker": "Karify.Application\\Models\\Interface\\Service\\IProyectoService.cs",
-              "ToolTip": "D:\\Tesis\\Karify.Worker\\Karify.Application\\Models\\Interface\\Service\\IProyectoService.cs",
-              "RelativeToolTip": "Karify.Application\\Models\\Interface\\Service\\IProyectoService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAgAAAAdAAAAAAAAAA==",
+              "Title": "ObtenerTesisResponse.cs",
+              "DocumentMoniker": "D:\\Tesis\\Karify.Worker\\Karify.Application\\Models\\Karify\\ObtenerTesisResponse.cs",
+              "RelativeDocumentMoniker": "Karify.Application\\Models\\Karify\\ObtenerTesisResponse.cs",
+              "ToolTip": "D:\\Tesis\\Karify.Worker\\Karify.Application\\Models\\Karify\\ObtenerTesisResponse.cs",
+              "RelativeToolTip": "Karify.Application\\Models\\Karify\\ObtenerTesisResponse.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-28T04:12:05.011Z",
+              "WhenOpened": "2026-06-28T09:11:56.793Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "ProyectoService.cs",
               "DocumentMoniker": "D:\\Tesis\\Karify.Worker\\Karify.Application\\Models\\Services\\ProyectoService.cs",
               "RelativeDocumentMoniker": "Karify.Application\\Models\\Services\\ProyectoService.cs",
               "ToolTip": "D:\\Tesis\\Karify.Worker\\Karify.Application\\Models\\Services\\ProyectoService.cs",
               "RelativeToolTip": "Karify.Application\\Models\\Services\\ProyectoService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAADYAAAAAAAAAAAAiwEMAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-28T04:09:49.6Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "appsettings.Development.json",
-              "DocumentMoniker": "D:\\Tesis\\Karify.Worker\\Karify.Worker\\appsettings.Development.json",
-              "RelativeDocumentMoniker": "Karify.Worker\\appsettings.Development.json",
-              "ToolTip": "D:\\Tesis\\Karify.Worker\\Karify.Worker\\appsettings.Development.json",
-              "RelativeToolTip": "Karify.Worker\\appsettings.Development.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAADAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-06-28T04:24:12.644Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "D:\\Tesis\\Karify.Worker\\Karify.Worker\\appsettings.json",
-              "RelativeDocumentMoniker": "Karify.Worker\\appsettings.json",
-              "ToolTip": "D:\\Tesis\\Karify.Worker\\Karify.Worker\\appsettings.json",
-              "RelativeToolTip": "Karify.Worker\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAADAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-06-28T04:24:32.186Z",
+              "WhenOpened": "2026-06-28T09:09:00.234Z",
               "EditorCaption": ""
             }
           ]

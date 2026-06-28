@@ -19,7 +19,7 @@ namespace Karify.Repository.Repository
             this.dataBase = dataBase;
         }
 
-        public async Task<IEnumerable<ObtenerTesisResponse>> GetDangerTacking()
+        public async Task<IEnumerable<ObtenerTesisResponse>> GetProyectoPorRevision()
         {
             using (var cnx = this.dataBase.CreateConnection())
             {
@@ -35,7 +35,8 @@ namespace Karify.Repository.Repository
                             Id = Convert.IsDBNull(reader["ID"]) ? 0 : Convert.ToInt32(reader["ID"].ToString()),
                             Nombre = Convert.IsDBNull(reader["NOMBRE"]) ? string.Empty : reader["NOMBRE"].ToString(),
                             Descripcion= Convert.IsDBNull(reader["DESCRIPCION"]) ? string.Empty : reader["DESCRIPCION"].ToString(),
-                            Estado= Convert.IsDBNull(reader["ESTADO"]) ? string.Empty : reader["ESTADO"].ToString(),
+                            IdEscuela = Convert.IsDBNull(reader["ID_ESCUELA"]) ? 0 : Convert.ToInt32(reader["ID_ESCUELA"].ToString()),
+                            Estado = Convert.IsDBNull(reader["ESTADO"]) ? string.Empty : reader["ESTADO"].ToString(),
                             FechaRegistro= Convert.IsDBNull(reader["FECHA_REGISTRO"]) ? DateTime.Now : Convert.ToDateTime(reader["FECHA_REGISTRO"].ToString())
                         });
                     }

@@ -7,6 +7,6 @@ namespace Karify.Application.Models.Interface.Repository
 {
     public interface IProyectoRepository
     {
-        Task<IEnumerable<ObtenerTesisResponse>> GetDangerTacking();
+        Task<IEnumerable<ObtenerTesisResponse>> GetProyectoPorRevision();
     }
 }

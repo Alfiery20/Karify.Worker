@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Karify.Infrastructure\Karify.Infrastructure.csproj" />
     <ProjectReference Include="..\Karify.Repository\Karify.Repository.csproj" />
   </ItemGroup>
 </Project>

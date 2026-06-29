@@ -18,6 +18,8 @@ builder.Services.AddTransient<IProyectoRepository, ProyectoRepository>();
 builder.Services.AddTransient<IProyectoService, ProyectoService>();
 builder.Services.AddTransient<IUnprgExternalService, UnprgExternalService>();
 
+builder.Services.AddTransient<IGoogleService, GoogleService>();
+
 builder.Services.AddTransient<DataBase>();
 
 var host = builder.Build();

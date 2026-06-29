@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Karify.Application.Models.Karify
+namespace Karify.Application.Models.Karify.ObtenerTesis
 {
     public class ObtenerTesisResponse
     {
@@ -12,5 +12,9 @@ namespace Karify.Application.Models.Karify
         public int IdEscuela { get; set; }
         public string Estado { get; set; }
         public DateTime FechaRegistro { get; set; }
+        public string NombreAlumno { get; set; }
+        public string ApellidoPaterno { get; set; }
+        public string ApellidoMaterno { get; set; }
+        public string Correo { get; set; }
     }
 }

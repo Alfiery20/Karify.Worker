@@ -16,4 +16,17 @@
     <ProjectReference Include="..\Karify.Infrastructure\Karify.Infrastructure.csproj" />
     <ProjectReference Include="..\Karify.Repository\Karify.Repository.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Templates\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Templates\ProyectoAprobado.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Templates\ProyectoRechazado.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

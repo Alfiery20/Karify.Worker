@@ -1,7 +1,10 @@
 ﻿using Karify.Application.Models.Interface;
 using Karify.Application.Models.Interface.Repository;
 using Karify.Application.Models.Interface.Service;
-using Karify.Application.Models.Karify;
+using Karify.Application.Models.Karify.GuardarResultados;
+using Karify.Application.Models.Karify.ObtenerTesis;
+using Karify.Application.Models.Services.GoogleService;
+using Karify.Application.Models.UNPRG;
 using Microsoft.Extensions.Logging;
 
 namespace Karify.Application.Models.Services
@@ -10,92 +13,118 @@ namespace Karify.Application.Models.Services
     {
         private readonly IProyectoRepository _proyectoRepository;
         private readonly IUnprgExternalService _unprgExternalService;
-        private readonly ILogger _logger;
+        private readonly IGoogleService _googleService;
+        private readonly ILogger<ProyectoService> _logger;
+
+        private static readonly HashSet<string> Stopwords = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "los", "las", "una", "uno", "para", "por", "con", "que", "del",
+            "este", "esta", "estos", "estas", "son", "fue", "han", "mas",
+            "como", "pero", "tambien", "sobre", "entre", "sistema", "usando",
+            "utilizando", "implementacion", "presenta", "trabajo", "desarrollo"
+        };
 
         public ProyectoService(
             ILogger<ProyectoService> logger,
             IProyectoRepository proyectoRepository,
-            IUnprgExternalService unprgExternalService)
+            IUnprgExternalService unprgExternalService,
+            IGoogleService googleService)
         {
-            this._logger = logger;
-            this._proyectoRepository = proyectoRepository;
-            this._unprgExternalService = unprgExternalService;
+            _logger = logger;
+            _proyectoRepository = proyectoRepository;
+            _unprgExternalService = unprgExternalService;
+            _googleService = googleService;
         }
 
         public async Task<bool> Execute()
         {
-            this._logger.LogInformation("Prueba de funcionamiento");
-            var response = await this._proyectoRepository.GetProyectoPorRevision();
-            if (response.Count() > 0)
-            {
-                this.CompararResultados(response.ToList());
-            }
-            this._logger.LogInformation($"Se obtuvo {response.Count()} proyectos en revisión");
+            var proyectos = (await _proyectoRepository.GetProyectoPorRevision()).ToList();
+
+            _logger.LogInformation("Se obtuvieron {Count} proyectos en revisión", proyectos.Count);
+
+            if (proyectos.Count > 0)
+                await CompararResultados(proyectos);
+
             return true;
         }
 
-        public async Task CompararResultados(List<ObtenerTesisResponse> proyectos)
+        private async Task CompararResultados(List<ObtenerTesisResponse> proyectos)
         {
             foreach (var proyecto in proyectos)
             {
-                this._logger.LogInformation("Iniciando comparación para proyecto: {Nombre}", proyecto.Nombre);
+                _logger.LogInformation("Iniciando comparación para proyecto: {Nombre}", proyecto.Nombre);
 
-                // Llamado a la API mock por escuela
-                var tesisRepositorio = await this._unprgExternalService.ObtenerTesisEscuela(proyecto.IdEscuela);
+                var tesisRepositorio = await _unprgExternalService.ObtenerTesisEscuela(proyecto.IdEscuela);
 
                 if (tesisRepositorio.Count == 0)
                 {
-                    this._logger.LogWarning("No se encontraron tesis en el repositorio para la escuela {IdEscuela}", proyecto.IdEscuela);
+                    _logger.LogWarning("Sin tesis en repositorio para escuela {IdEscuela}", proyecto.IdEscuela);
                     continue;
                 }
 
-                // Armar el input con los datos del proyecto
-                var inputTokens = Tokenizar($"{proyecto.Nombre} {proyecto.Nombre} {proyecto.Descripcion}");
+                var (mejorTesis, porcentaje) = ObtenerMejorCoincidencia(proyecto, tesisRepositorio);
 
-                // Construir corpus: input primero, luego cada tesis del repositorio
-                var corpus = new List<List<string>> { inputTokens };
-                corpus.AddRange(tesisRepositorio.Select(t =>
-                    Tokenizar($"{t.Titulo} {t.Titulo} {t.Resumen} {string.Join(" ", t.PalabrasClave)}")));
+                _logger.LogInformation(
+                    "Proyecto: {Nombre} | Tesis similar: {TesisId} - '{TesisTitulo}' | Similitud: {Porcentaje}%",
+                    proyecto.Nombre, mejorTesis.Id, mejorTesis.Titulo ?? "N/A", porcentaje);
 
-                var vectores = CalcularTfIdf(corpus);
-                var vectorInput = vectores[0];
-
-                // Calcular similitud contra cada tesis
-                UNPRG.Tesis? mejorTesis = null;
-                double mejorScore = -1;
-
-                for (int i = 0; i < tesisRepositorio.Count; i++)
+                var resultado = await _proyectoRepository.GuardarResultadoSimilitud(new GuardarResultadosCommand
                 {
-                    double score = CosineSimilitud(vectorInput, vectores[i + 1]);
-                    if (score > mejorScore)
-                    {
-                        mejorScore = score;
-                        mejorTesis = tesisRepositorio[i];
-                    }
-                }
+                    IdProyecto = proyecto.Id,
+                    PorcentajeSimilitud = porcentaje,
+                    DOI = mejorTesis.Doi ?? string.Empty,
+                });
 
-                var porcentaje = Math.Round(mejorScore * 100, 2);
-
-                this._logger.LogInformation(
-                    "Proyecto: {Nombre} | Tesis más similar: Id: {TesisId} - '{TesisTitulo}' | Similitud: {Porcentaje}%",
-                    proyecto.Nombre, mejorTesis.Id, mejorTesis?.Titulo ?? "N/A", porcentaje);
+                if (resultado.Mensaje.Equals("OK"))
+                    await EnviarCorreo(porcentaje, proyecto, mejorTesis);
             }
+        }
+
+        private (Tesis mejorTesis, double porcentaje) ObtenerMejorCoincidencia(
+            ObtenerTesisResponse proyecto,
+            List<Tesis> tesisRepositorio)
+        {
+            var inputTokens = Tokenizar($"{proyecto.Nombre} {proyecto.Nombre} {proyecto.Descripcion}");
+
+            var corpus = new List<List<string>> { inputTokens };
+            corpus.AddRange(tesisRepositorio.Select(t =>
+                Tokenizar($"{t.Titulo} {t.Titulo} {t.Resumen} {string.Join(" ", t.PalabrasClave)}")));
+
+            var vectores = CalcularTfIdf(corpus);
+            var vectorInput = vectores[0];
+
+            Tesis mejorTesis = new();
+            double mejorScore = -1;
+
+            for (int i = 0; i < tesisRepositorio.Count; i++)
+            {
+                double score = CosineSimilitud(vectorInput, vectores[i + 1]);
+                if (score > mejorScore)
+                {
+                    mejorScore = score;
+                    mejorTesis = tesisRepositorio[i];
+                }
+            }
+
+            return (mejorTesis, Math.Round(mejorScore * 100, 2));
         }
 
         private List<string> Tokenizar(string texto)
         {
-            return texto
+            var normalizado = texto
                 .ToLowerInvariant()
                 .Normalize(System.Text.NormalizationForm.FormD)
                 .Where(c => char.IsLetterOrDigit(c) || c == ' ')
                 .Aggregate(new System.Text.StringBuilder(), (sb, c) => sb.Append(c))
-                .ToString()
+                .ToString();
+
+            return normalizado
                 .Split(' ', StringSplitOptions.RemoveEmptyEntries)
                 .Where(t => t.Length > 2 && !Stopwords.Contains(t))
                 .ToList();
         }
 
-        private List<Dictionary<string, double>> CalcularTfIdf(List<List<string>> corpus)
+        private static List<Dictionary<string, double>> CalcularTfIdf(List<List<string>> corpus)
         {
             int N = corpus.Count;
 
@@ -115,38 +144,63 @@ namespace Karify.Application.Models.Services
             return tfs.Select(freq =>
             {
                 int total = freq.Values.Sum();
-                var vec = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
-                foreach (var (term, count) in freq)
-                {
-                    double tf = (double)count / total;
-                    double idf = Math.Log((N + 1.0) / (df.GetValueOrDefault(term) + 1.0));
-                    vec[term] = tf * idf;
-                }
-                return vec;
+                return freq.ToDictionary(
+                    kvp => kvp.Key,
+                    kvp =>
+                    {
+                        double tf = (double)kvp.Value / total;
+                        double idf = Math.Log((N + 1.0) / (df.GetValueOrDefault(kvp.Key) + 1.0));
+                        return tf * idf;
+                    },
+                    StringComparer.OrdinalIgnoreCase);
             }).ToList();
         }
 
-        private double CosineSimilitud(Dictionary<string, double> a, Dictionary<string, double> b)
+        private static double CosineSimilitud(Dictionary<string, double> a, Dictionary<string, double> b)
         {
             double dot = 0, magA = 0, magB = 0;
+
             foreach (var (term, valA) in a)
             {
                 dot += valA * b.GetValueOrDefault(term);
                 magA += valA * valA;
             }
+
             foreach (var valB in b.Values)
                 magB += valB * valB;
 
-            if (magA == 0 || magB == 0) return 0;
-            return dot / (Math.Sqrt(magA) * Math.Sqrt(magB));
+            return (magA == 0 || magB == 0) ? 0 : dot / (Math.Sqrt(magA) * Math.Sqrt(magB));
         }
 
-        private static readonly HashSet<string> Stopwords = new(StringComparer.OrdinalIgnoreCase)
+        private async Task EnviarCorreo(double porcentaje, ObtenerTesisResponse proyecto, Tesis mejorTesis)
         {
-            "los", "las", "una", "uno", "para", "por", "con", "que", "del",
-            "este", "esta", "estos", "estas", "son", "fue", "han", "mas",
-            "como", "pero", "tambien", "sobre", "entre", "sistema", "usando",
-            "utilizando", "implementacion", "presenta", "trabajo", "desarrollo"
-        };
+            if (porcentaje >= 40)
+            {
+                await _googleService.EnvioSolicitudRechazado(new EnviarEvaluacionErronea
+                {
+                    NombreAlumno = proyecto.NombreAlumno,
+                    ApellidoPaterno = proyecto.ApellidoPaterno,
+                    ApellidoMaterno = proyecto.ApellidoMaterno,
+                    CorreoAlumno = proyecto.Correo,
+                    NombreProyecto = proyecto.Nombre,
+                    DescripcionProyecto = proyecto.Descripcion,
+                    DOI = mejorTesis.Doi ?? string.Empty,
+                    NombreProyectoResultado = mejorTesis.Titulo ?? string.Empty,
+                    PorcentajeSimilitud = porcentaje,
+                });
+            }
+            else
+            {
+                await _googleService.EnvioSolicitudAprobacion(new EnviarEvaluacionExitosa
+                {
+                    NombreAlumno = proyecto.NombreAlumno,
+                    ApellidoPaterno = proyecto.ApellidoPaterno,
+                    ApellidoMaterno = proyecto.ApellidoMaterno,
+                    CorreoAlumno = proyecto.Correo,
+                    NombreProyecto = proyecto.Nombre,
+                    DescripcionProyecto = proyecto.Descripcion,
+                });
+            }
+        }
     }
 }

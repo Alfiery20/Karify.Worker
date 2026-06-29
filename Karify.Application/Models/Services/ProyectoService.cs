@@ -1,6 +1,7 @@
 ﻿using Karify.Application.Models.Interface;
 using Karify.Application.Models.Interface.Repository;
 using Karify.Application.Models.Interface.Service;
+using Karify.Application.Models.Karify.EnviarConstancia;
 using Karify.Application.Models.Karify.GuardarResultados;
 using Karify.Application.Models.Karify.ObtenerTesis;
 using Karify.Application.Models.Services.GoogleService;
@@ -14,6 +15,8 @@ namespace Karify.Application.Models.Services
         private readonly IProyectoRepository _proyectoRepository;
         private readonly IUnprgExternalService _unprgExternalService;
         private readonly IGoogleService _googleService;
+        private readonly IConstanciaService _constanciaService;
+        private readonly IDateTimeService _dateTimeService;
         private readonly ILogger<ProyectoService> _logger;
 
         private static readonly HashSet<string> Stopwords = new(StringComparer.OrdinalIgnoreCase)
@@ -28,12 +31,16 @@ namespace Karify.Application.Models.Services
             ILogger<ProyectoService> logger,
             IProyectoRepository proyectoRepository,
             IUnprgExternalService unprgExternalService,
-            IGoogleService googleService)
+            IGoogleService googleService,
+            IConstanciaService constanciaService,
+            IDateTimeService dateTimeService)
         {
-            _logger = logger;
-            _proyectoRepository = proyectoRepository;
-            _unprgExternalService = unprgExternalService;
-            _googleService = googleService;
+            this._logger = logger;
+            this._proyectoRepository = proyectoRepository;
+            this._unprgExternalService = unprgExternalService;
+            this._googleService = googleService;
+            this._constanciaService = constanciaService;
+            this._dateTimeService = dateTimeService;
         }
 
         public async Task<bool> Execute()
@@ -72,6 +79,7 @@ namespace Karify.Application.Models.Services
                 {
                     IdProyecto = proyecto.Id,
                     PorcentajeSimilitud = porcentaje,
+                    FechaProcesamiento = this._dateTimeService.HoraLocal(),
                     DOI = mejorTesis.Doi ?? string.Empty,
                 });
 
@@ -191,6 +199,11 @@ namespace Karify.Application.Models.Services
             }
             else
             {
+                var generarConstancia = await this.GenerarConstancia(new EnviarConstanciaCommand()
+                {
+                    IdProyecto = proyecto.Id
+                });
+
                 await _googleService.EnvioSolicitudAprobacion(new EnviarEvaluacionExitosa
                 {
                     NombreAlumno = proyecto.NombreAlumno,
@@ -199,8 +212,27 @@ namespace Karify.Application.Models.Services
                     CorreoAlumno = proyecto.Correo,
                     NombreProyecto = proyecto.Nombre,
                     DescripcionProyecto = proyecto.Descripcion,
+                    NombreArchivoPdf = generarConstancia.NombreArchivo,
+                    PdfBase64 = generarConstancia.Base64
                 });
             }
+        }
+
+        private async Task<Constancia> GenerarConstancia(EnviarConstanciaCommand request)
+        {
+            this._logger.LogInformation("Iniciando handler de envio de constancia");
+            var datosProyecto = await this._proyectoRepository.ObtenerDatosConstancia(request);
+            datosProyecto.NombresAlumnos = (await this._proyectoRepository.ObtenerAlumnosPorProyecto(request.IdProyecto)).ToList();
+            var constancia = this._constanciaService.GenerarConstancia(datosProyecto);
+            var response = await this._proyectoRepository.GuardarConstancia(new GuardarConstancia()
+            {
+                IdProyecto = request.IdProyecto,
+                NombreConstancia = constancia.NombreArchivo,
+                Base64 = constancia.Base64,
+                Guid = datosProyecto.CodigoConstancia
+            });
+            this._logger.LogInformation("Finalizando handler de envio de constancia");
+            return constancia;
         }
     }
 }

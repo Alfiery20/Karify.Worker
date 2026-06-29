@@ -57,6 +57,14 @@ namespace Karify.Infrastructure.Services
 
             mail.To.Add(envioCorreo.CorreoAlumno);
 
+            if (!string.IsNullOrEmpty(envioCorreo.PdfBase64))
+            {
+                var pdfBytes = Convert.FromBase64String(envioCorreo.PdfBase64);
+                var pdfStream = new MemoryStream(pdfBytes);
+                var attachment = new Attachment(pdfStream, envioCorreo.NombreArchivoPdf, "application/pdf");
+                mail.Attachments.Add(attachment);
+            }
+
             await smtp.SendMailAsync(mail);
         }
 

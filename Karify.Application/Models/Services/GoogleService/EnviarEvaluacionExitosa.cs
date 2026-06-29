@@ -12,5 +12,7 @@ namespace Karify.Application.Models.Services.GoogleService
         public string NombreProyecto { get; set; }
         public string DescripcionProyecto { get; set; }
         public string CorreoAlumno { get; set; }
+        public string? PdfBase64 { get; set; }
+        public string NombreArchivoPdf { get; set; } = "Constancia.pdf";
     }
 }

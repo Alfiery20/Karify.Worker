@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Karify.Application.Models.Interface.Repository;
+using Karify.Application.Models.Karify.EnviarConstancia;
 using Karify.Application.Models.Karify.GuardarResultados;
 using Karify.Application.Models.Karify.ObtenerTesis;
 using Karify.Repository.Database;
@@ -59,6 +60,8 @@ namespace Karify.Repository.Repository
                 parameters.Add("@pidProyecto", command.IdProyecto, DbType.Int32, ParameterDirection.Input);
                 parameters.Add("@pDOI", command.DOI, DbType.String, ParameterDirection.Input);
                 parameters.Add("@pPorcentaje", command.PorcentajeSimilitud, DbType.Double, ParameterDirection.Input);
+                parameters.Add("@pFechaProcesamiento", command.FechaProcesamiento, DbType.DateTime, ParameterDirection.Input);
+
                 parameters.Add("@msj", "", DbType.String, ParameterDirection.Output);
 
                 var reader = await cnx.ExecuteAsync(
@@ -72,6 +75,84 @@ namespace Karify.Repository.Repository
                 };
                 return response;
 
+            }
+        }
+
+        public async Task<ObtenerDatosConstancia> ObtenerDatosConstancia(EnviarConstanciaCommand command)
+        {
+            using (var cnx = _dataBase.CreateConnection())
+            {
+                ObtenerDatosConstancia response = new();
+                DynamicParameters parameters = new DynamicParameters();
+
+                parameters.Add("@pIdProyecto", command.IdProyecto, DbType.Int32, ParameterDirection.Input);
+
+                using (var reader = await cnx.ExecuteReaderAsync(
+                    "[dbo].[usp_ObtenerDatosConstancia]",
+                    param: parameters,
+                    commandType: CommandType.StoredProcedure))
+                {
+                    while (reader.Read())
+                    {
+                        response.Id = Convert.IsDBNull(reader["ID"]) ? 0 : Convert.ToInt32(reader["ID"].ToString());
+                        response.NombreProyecto = Convert.IsDBNull(reader["NOMBRE"]) ? "" : reader["NOMBRE"].ToString();
+                        response.ProfesorAsesor = Convert.IsDBNull(reader["NOMBRE_PROFESOR"]) ? "" : reader["NOMBRE_PROFESOR"].ToString();
+                        response.Fecha = Convert.IsDBNull(reader["FECHA"]) ? default : Convert.ToDateTime(reader["FECHA"].ToString());
+
+                    }
+                }
+                return response;
+            }
+        }
+
+        public async Task<IEnumerable<EnviarConstanciaAlumno>> ObtenerAlumnosPorProyecto(int IdProyecto)
+        {
+            using (var cnx = _dataBase.CreateConnection())
+            {
+                List<EnviarConstanciaAlumno> proyectos = new();
+                DynamicParameters parameters = new DynamicParameters();
+
+                parameters.Add("pIdProyecto", IdProyecto, DbType.Int32, ParameterDirection.Input);
+
+                using (var reader = await cnx.ExecuteReaderAsync(
+                    "[dbo].[usp_ObtenerAlumnosPorProyecto]",
+                    param: parameters,
+                    commandType: CommandType.StoredProcedure))
+                {
+                    while (reader.Read())
+                    {
+                        proyectos.Add(new EnviarConstanciaAlumno()
+                        {
+                            NumeroDocumento = Convert.IsDBNull(reader["NUMERO_DOCUMENTO"]) ? "" : reader["NUMERO_DOCUMENTO"].ToString(),
+                            Nombre = Convert.IsDBNull(reader["NOMBRE"]) ? "" : reader["NOMBRE"].ToString()
+                        });
+                    }
+                }
+                return proyectos;
+            }
+        }
+
+        public async Task<EnviarConstanciaCommandDTO> GuardarConstancia(GuardarConstancia command)
+        {
+            using (var cnx = _dataBase.CreateConnection())
+            {
+                EnviarConstanciaCommandDTO response = new();
+                DynamicParameters parameters = new DynamicParameters();
+
+                parameters.Add("@pIdProyecto", command.IdProyecto, DbType.Int32, ParameterDirection.Input);
+                parameters.Add("@pNombreConstancia", command.NombreConstancia, DbType.String, ParameterDirection.Input);
+                parameters.Add("@pBase64", command.Base64, DbType.String, ParameterDirection.Input);
+                parameters.Add("@pGuid", command.Guid, DbType.String, ParameterDirection.Input);
+                parameters.Add("@msj", "", DbType.String, ParameterDirection.Output);
+
+                using var reader = await cnx.ExecuteReaderAsync(
+                    "[dbo].[usp_GuardarConstancia]",
+                    param: parameters,
+                    commandType: CommandType.StoredProcedure);
+
+                response.Mensaje = parameters.Get<string>("msj");
+
+                return response;
             }
         }
     }

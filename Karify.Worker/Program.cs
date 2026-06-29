@@ -17,6 +17,9 @@ builder.Services.AddHttpClient("MockApi", client =>
 builder.Services.AddTransient<IProyectoRepository, ProyectoRepository>();
 builder.Services.AddTransient<IProyectoService, ProyectoService>();
 builder.Services.AddTransient<IUnprgExternalService, UnprgExternalService>();
+builder.Services.AddTransient<IUnprgExternalService, UnprgExternalService>();
+builder.Services.AddTransient<IConstanciaService, ConstanciaService>();
+builder.Services.AddTransient<IDateTimeService, DateTimeService>();
 
 builder.Services.AddTransient<IGoogleService, GoogleService>();
 

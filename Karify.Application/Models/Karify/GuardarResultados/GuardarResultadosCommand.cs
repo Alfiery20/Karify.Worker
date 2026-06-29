@@ -9,5 +9,6 @@ namespace Karify.Application.Models.Karify.GuardarResultados
         public int IdProyecto { get; set; }
         public string DOI { get; set; }
         public double PorcentajeSimilitud { get; set; }
+        public DateTime FechaProcesamiento { get; set; }
     }
 }

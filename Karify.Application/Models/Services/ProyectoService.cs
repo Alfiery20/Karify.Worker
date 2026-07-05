@@ -182,7 +182,7 @@ namespace Karify.Application.Models.Services
 
         private async Task EnviarCorreo(double porcentaje, ObtenerTesisResponse proyecto, Tesis mejorTesis)
         {
-            if (porcentaje >= 40)
+            if (porcentaje >= 20)
             {
                 await _googleService.EnvioSolicitudRechazado(new EnviarEvaluacionErronea
                 {

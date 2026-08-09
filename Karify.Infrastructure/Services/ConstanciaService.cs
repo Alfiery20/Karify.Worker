@@ -43,7 +43,7 @@ namespace Karify.Infrastructure.Services
             using var memoryStream = new MemoryStream();
 
             // 1. Generar PDF sin firma primero
-            GenerarContenido(memoryStream, request);
+            this.GenerarContenido(memoryStream, request);
             var pdfBytes = memoryStream.ToArray();
 
             // 2. Firmar el PDF
@@ -161,6 +161,7 @@ namespace Karify.Infrastructure.Services
             AgregarFila("Alumno(s):", string.Join("\n", r.NombresAlumnos.Select(a => $"{a.Nombre} — DNI: {a.NumeroDocumento}")));
             AgregarFila("Profesor Asesor:", r.ProfesorAsesor);
             AgregarFila("Fecha:", r.Fecha.ToString("dd 'de' MMMM 'de' yyyy", new System.Globalization.CultureInfo("es-PE")));
+            AgregarFila("Porcentaje de Similitud:", r.PorcentajeSimilitud.ToString("0.00") + "%");
 
             document.Add(datosTable);
 

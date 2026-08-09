@@ -10,6 +10,7 @@ namespace Karify.Application.Models.Karify.EnviarConstancia
     {
         public int Id { get; set; }
         public string NombreProyecto { get; set; } = string.Empty;
+        public double PorcentajeSimilitud { get; set; }
         public List<EnviarConstanciaAlumno> NombresAlumnos { get; set; } = [];
         public string ProfesorAsesor { get; set; } = string.Empty;
         public DateTime Fecha { get; set; }

@@ -96,6 +96,7 @@ namespace Karify.Repository.Repository
                     {
                         response.Id = Convert.IsDBNull(reader["ID"]) ? 0 : Convert.ToInt32(reader["ID"].ToString());
                         response.NombreProyecto = Convert.IsDBNull(reader["NOMBRE"]) ? "" : reader["NOMBRE"].ToString();
+                        response.PorcentajeSimilitud = Convert.IsDBNull(reader["PORCENTAJE_SIMILITUD"]) ? 0 : Convert.ToDouble(reader["PORCENTAJE_SIMILITUD"].ToString());
                         response.ProfesorAsesor = Convert.IsDBNull(reader["NOMBRE_PROFESOR"]) ? "" : reader["NOMBRE_PROFESOR"].ToString();
                         response.Fecha = Convert.IsDBNull(reader["FECHA"]) ? default : Convert.ToDateTime(reader["FECHA"].ToString());
 
